@@ -1,11 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Full Stack Project</title>
-  </head>
-  <body>
-    <!-- You code goes here-->
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Hosting</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <section id="auth-view" class="container full-center">
+        <div class="auth-card">
+            <h1>Image Hosting</h1>
+            <p class="subtitle">Create an account</p>
+            
+            <form>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary full-width">Sign Up</button>
+            </form>
+            
+            <a href="#" class="link">Already have an account? Sign in</a>
+        </div>
+    </section>
+
+    <section id="dashboard-view" class="container" style="display: none;">
+        <header class="main-header">
+            <div class="header-left">
+                <h1>Image Hosting</h1>
+                <p class="usage">0 / 10 images used</p>
+            </div>
+            <div class="header-right">
+                <div class="user-badge">
+                    <span class="user-icon">👤</span>
+                    sameera22@nycstudents.net
+                </div>
+                <button class="btn-outline">
+                    <span>↳</span> Logout
+                </button>
+            </div>
+        </header>
+
+        <main class="upload-container">
+            <div class="drop-zone">
+                <div class="upload-icon">↑</div>
+                <p class="drop-text">Drag and drop your image here</p>
+                <p class="or">or</p>
+                <button class="btn-primary">Choose File</button>
+            </div>
+
+            <div class="empty-state">
+                <div class="image-placeholder-icon">🖼️</div>
+                <p>No images uploaded yet</p>
+            </div>
+        </main>
+
+        <button class="help-fab">?</button>
+    </section>
+
+</body>
 </html>

@@ -1,1 +1,150 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+body {
+    background-color: #f0f4f9; /* Soft light blue/grey */
+    color: #1a1a1a;
+}
+
+.container {
+    min-height: 100vh;
+    padding: 40px;
+}
+
+.full-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Auth Card Styles */
+.auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-card h1 { font-size: 28px; margin-bottom: 5px; }
+.subtitle { color: #666; margin-bottom: 30px; }
+
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+}
+
+.input-group input:focus { border-color: #2563eb; }
+
+/* Buttons & Links */
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover { background-color: #1d4ed8; }
+.full-width { width: 100%; margin-top: 10px; }
+.link { display: block; margin-top: 20px; color: #2563eb; text-decoration: none; font-size: 14px; }
+
+/* Dashboard Styles */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto 40px auto;
+}
+
+.usage { color: #666; font-weight: 500; }
+
+.header-right { display: flex; gap: 12px; }
+
+.user-badge {
+    background: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.btn-outline {
+    background: white;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Upload Zone */
+.upload-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.drop-zone {
+    background: white;
+    border: 2px dashed #cbd5e1;
+    border-radius: 16px;
+    padding: 60px;
+    text-align: center;
+}
+
+.upload-icon { font-size: 40px; color: #94a3b8; margin-bottom: 10px; }
+.drop-text { font-size: 18px; font-weight: 500; color: #334155; }
+.or { color: #94a3b8; margin: 10px 0; }
+
+.empty-state {
+    margin-top: 80px;
+    text-align: center;
+    opacity: 0.4;
+}
+
+.image-placeholder-icon { font-size: 60px; margin-bottom: 10px; }
+
+/* Help Button */
+.help-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+}
