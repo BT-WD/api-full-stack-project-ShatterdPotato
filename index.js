@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js"
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js"
 
 const firebaseConfig = {
 apiKey: "AIzaSyBFxE7Zpz6tPiEJQtzidxRpG3kr2ocjW5g",
@@ -21,19 +21,38 @@ const api_key = "fa8348adfd7223a66deebf0baedd684f"
 
 const fileInput = document.getElementById('file-input');
 const chooseFileBtn = document.getElementById('choose-file-btn');
+const img_links = []
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
         dashboardView.style.display = "";
         loginView.style.display = "none"
         createView.style.display = "none"
+        collectLinks()
     } else {
         dashboardView.style.display = "none"
         loginView.style.display = ""
         createView.style.display = "none"
+        img_links = []
     }
 });
 
+async function collectLinks() {
+    const linksElement = document.getElementById("img_links")
+    const links = await getDocs(collection(db, "img_links"))
+    links.forEach(doc => {
+        const link = doc.data().link
+        if (doc.data().UUID == auth.currentUser.uid) {
+            console.log(doc.data().link)
+            const li = document.createElement("li")
+            const a = document.createElement("a")
+            a.href = link
+            a.textContent = link
+            li.append(a)
+            linksElement.append(li)
+        }
+    });
+}
 document.getElementById('logout-btn').addEventListener('click', () => {
     signOut(auth).then(() => {
         dashboardView.style.display = "none"
