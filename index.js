@@ -3,12 +3,12 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js"
 
 const firebaseConfig = {
-apiKey: "AIzaSyBFxE7Zpz6tPiEJQtzidxRpG3kr2ocjW5g",
-authDomain: "hot-and-cold-81a78.firebaseapp.com",
-projectId: "hot-and-cold-81a78",
-storageBucket: "hot-and-cold-81a78.firebasestorage.app",
-messagingSenderId: "107139806240",
-appId: "1:107139806240:web:037f3851af00b443743845"
+  apiKey: "AIzaSyBFxE7Zpz6tPiEJQtzidxRpG3kr2ocjW5g",
+  authDomain: "hot-and-cold-81a78.firebaseapp.com",
+  projectId: "hot-and-cold-81a78",
+  storageBucket: "hot-and-cold-81a78.firebasestorage.app",
+  messagingSenderId: "107139806240",
+  appId: "1:107139806240:web:037f3851af00b443743845"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -21,13 +21,14 @@ const api_key = "fa8348adfd7223a66deebf0baedd684f"
 
 const fileInput = document.getElementById('file-input');
 const chooseFileBtn = document.getElementById('choose-file-btn');
-const img_links = []
+var img_links = []
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
         dashboardView.style.display = "";
         loginView.style.display = "none"
         createView.style.display = "none"
+        document.getElementById("username").textContent = auth.currentUser.email
         collectLinks()
     } else {
         dashboardView.style.display = "none"
@@ -37,22 +38,44 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+
 async function collectLinks() {
+    img_links = []
     const linksElement = document.getElementById("img_links")
+    linksElement.innerHTML = ""
     const links = await getDocs(collection(db, "img_links"))
     links.forEach(doc => {
         const link = doc.data().link
         if (doc.data().UUID == auth.currentUser.uid) {
-            console.log(doc.data().link)
-            const li = document.createElement("li")
+            const figure = document.createElement("figure")
+            figure.classList.add("img-card")
+            const img = document.createElement("img")
+            img.src = link
+            img.alt = `image #${img_links.length + 1}`
+            const figCaption = document.createElement("figcaption")
             const a = document.createElement("a")
             a.href = link
             a.textContent = link
-            li.append(a)
+            figCaption.append(a)
+            figure.append(img)
+            figure.append(figCaption)
+            const li = document.createElement("li")
+            li.append(figure)
             linksElement.append(li)
+            img_links.push(link)
         }
     });
+
+    if (img_links.length > 0) {
+        document.getElementById('empty-image-view').style.display = "none" 
+        document.getElementById('gallery').style.display = ""
+    } else {
+        document.getElementById('empty-image-view').style.display = "" 
+        document.getElementById('gallery').style.display = "none"
+    }
+    document.getElementsByClassName("usage")[0].textContent = `${img_links.length} / 12 images used` 
 }
+
 document.getElementById('logout-btn').addEventListener('click', () => {
     signOut(auth).then(() => {
         dashboardView.style.display = "none"
@@ -64,6 +87,7 @@ document.getElementById('logout-btn').addEventListener('click', () => {
 })
 
 document.getElementById('signup-btn').addEventListener('click', () => {
+    event.preventDefault()
     const email = document.getElementById("email-field-signup").value
     const pass = document.getElementById("pwd-field-signup").value
     createUserWithEmailAndPassword(auth, email, pass)
@@ -71,10 +95,11 @@ document.getElementById('signup-btn').addEventListener('click', () => {
         console.error(error.message)
     });
     const usernameElement = document.getElementById("username");
-    usernameElement.textContent = email; 
+    usernameElement.textContent = auth.currentUser.email; 
 })
 
 document.getElementById('signin-btn').addEventListener('click', () => {
+    event.preventDefault()
     const email = document.getElementById("email-field-login").value
     const pass = document.getElementById("pwd-field-login").value
     signInWithEmailAndPassword(auth, email, pass)
@@ -99,11 +124,13 @@ chooseFileBtn.addEventListener('click', () => {
     fileInput.click();
 });
 
-
 fileInput.addEventListener('change', function() {
     if (this.files && this.files[0]) {
         const selectedFile = this.files[0];
-        alert("You selected: " + selectedFile.name);
+        if (img_links.length == 12) {
+          alert("You cannot upload any more images!")
+          return
+        }
         getIMGLink(selectedFile)
     }
 });
@@ -118,17 +145,16 @@ async function getIMGLink(selectedFile) {
         body: formData
     })
 
-   
     if (response.ok) {
         const responseJSON = await response.json()
         const imgURL = responseJSON.data.url
         try {
             console.log(getAuth(app).currentUser.UUID)
-            const docRef = await addDoc(collection(db, "img_links"), {
+            await addDoc(collection(db, "img_links"), {
                 UUID: getAuth(app).currentUser.uid,
                 link: imgURL
             });
-        console.log(imgURL);
+            collectLinks()  
         } catch (e) {
             console.error("Error adding document: ", e);
         }
